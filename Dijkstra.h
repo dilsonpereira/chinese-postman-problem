@@ -1,14 +1,16 @@
 #pragma once
 
-#include "./Matching/Graph.h"
-#include "./Matching/BinaryHeap.h"
-#include "./Matching/Globals.h"
+#include "./Minimum-Cost-Perfect-Matching/Graph.h"
+#include "./Minimum-Cost-Perfect-Matching/BinaryHeap.h"
+#include "./Minimum-Cost-Perfect-Matching/Globals.h"
+#include <limits>
+using namespace std;
 
 //Dijkstra's algorithm using binary heap
-//Returns a pair (vector, double)
-//The double is the cost of the solution
-//The vector gives the parent of each vertex in the tree of optimal paths
-pair< vector<int>, double > Dijkstra(const Graph & G, int origin, const vector<double> & cost)
+//Returns a pair (vector<int>, vector<double>)
+//vector<double> gives the cost of the optimal path to each vertex
+//vector<int> gives the parent of each vertex in the tree of optimal paths
+pair< vector<int>, vector<double> > Dijkstra(const Graph & G, int origin, const vector<double> & cost)
 {
 	BinaryHeap B;
 
@@ -20,16 +22,16 @@ pair< vector<int>, double > Dijkstra(const Graph & G, int origin, const vector<d
 	//Used to indicate whether a vertex is permanently labeled
 	vector<bool> permanent(n, false);
 
-	double obj = 0;
+	vector<double> pathCost(n, numeric_limits<double>::infinity());
 	
 	//Put s in the heap
-	B.Insert(0, s);
+	B.Insert(0, origin);
+	pathCost[origin] = 0;
 
 	for(int i = 0; i < n; i++)
 	{
 		//Select the vertex that can be reached with smallest cost
 		int u = B.DeleteMin();
-		int w = father[u];
 
 		permanent[u] = true;
 
@@ -41,18 +43,20 @@ pair< vector<int>, double > Dijkstra(const Graph & G, int origin, const vector<d
 			if(permanent[v])
 				continue;
 
-			double c = cost[G.GetEdgeIndex(u,v)];
+			double c = pathCost[u] + cost[G.GetEdgeIndex(u,v)];
 
 			//v has not been discovered yet
 			if(father[v] == -1)
 			{
 				father[v] = u;	
+				pathCost[v] = c;
 				B.Insert(c, v);
 			}
 			//we found a cheaper connection to v
-			else if( LESS(c, cost[G.GetEdgeIndex(father[v], v)]) )
+			else if( LESS(c, pathCost[v]) )
 			{
 				father[v] = u;
+				pathCost[v] = c;
 				B.ChangeKey(c, v);
 			}
 		}
@@ -61,7 +65,7 @@ pair< vector<int>, double > Dijkstra(const Graph & G, int origin, const vector<d
 	if(B.Size() > 0)
 		throw "Error: graph is not connected";
 
-	return make_pair(father, obj);
+	return make_pair(father, pathCost);
 }
 
 
