@@ -28,6 +28,12 @@ bool Connected(const Graph & G)
     return G.GetNumVertices() == n;
 }
 
+/*
+Solves the chinese postman problem
+returns a pair containing a list and a double
+the list is the sequence of vertices in the solution
+the double is the solution cost
+*/
 pair< list<int>, double > ChinesePostman(const Graph & G, const vector<double> & cost)
 {
 	//Check if the graph if connected
