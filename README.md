@@ -14,7 +14,7 @@ Usage:
 ./chinese -f <inputFile>
 ```
 ## File format:
-The first two lines give n (number of vertices) and m (number of edges). Each of the next m lines has a tuple (u, v [, c]) representing an edge, where u and v are the endpoints (0-based indexing) of the edge and c is its cost.
+The first two lines give n (number of vertices) and m (number of edges). Each of the next m lines has a tuple (u, v, c) representing an edge, where u and v are the endpoints (0-based indexing) of the edge and c is its cost.
 
 Sample input:
 ```
