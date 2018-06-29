@@ -1,32 +1,49 @@
-# A C++ implementation of the Christofides algorithm for instances in TSPLIB format
+# A C++ solution for the chinese postman problem
 
 To clone the repo and its dependencies (submodules): 
 ```
-git clone --recursive https://github.com/dilsonpereira/christofides-algorithm
+git clone --recursive https://github.com/dilsonpereira/chinese-postman-problem
 ```
 
 Compilation on Linux:
 ```
-make christofides
+make chinese
 ```
 Usage:
 ```
-./christofides -f <inputFile> [--coord] [-p] [-g <outputFile>]
+./chinese -f <inputFile>
+```
+## File format:
+The first two lines give n (number of vertices) and m (number of edges). Each of the next m lines has a tuple (u, v [, c]) representing an edge, where u and v are the endpoints (0-based indexing) of the edge and c is its cost.
+
+Sample input:
+```
+10
+15
+0 1 1
+0 4 3
+1 2 0
+1 4 10
+2 3 9
+2 5 2
+2 6 7
+3 6 3
+4 5 4
+4 7 2
+5 7 6
+6 8 4
+6 9 2
+7 8 1
+8 9 5
+
+```
+Sample output:
+```
+Solution cost: 62
+Solution:
+0 4 7 8 9 6 3 2 6 8 7 5 2 1 2 5 4 1 0 
 ```
 
-Option `-f` is used to specify the file name.
-
-The input file will be assumed to be in a TSPLIB format unless option `--coord` is provided. In that case, the first line of the file should give the number of vertices n followed by n lines giving the X and Y coordinates of the corresponding vertices.
-
-Option `-p` will print the edges in the solution. 
-
-Option `-g` will output the solution in Graphviz neato format to *outpuFile*. If you have Graphviz installed and instance coordinates are available, you can generate an image of the solution by running
-```
-neato -Tps <christofidesOutputFile> > <image.eps>
-```
-
-This code also provides a module for parsing TSPLIB instances, a module for solving minimum spanning tree problems and a module for solving minimum cost perfect matching problems.
-
-See Example.cpp to learn how to use the library.
+**See Example.cpp to learn how to use the library.**
 
 Feel free to contact me if you have any problem.
